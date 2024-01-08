@@ -37,6 +37,7 @@ function App() {
              <td>{u.first_name}</td>
              <td>{u.last_name}</td>
              <td>{u.email}</td>
+             <td><img alt="avatar" src={u.avatar} /></td>
            </tr>
           )
         }
