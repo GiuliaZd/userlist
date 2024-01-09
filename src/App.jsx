@@ -9,12 +9,17 @@ function App() {
     .then(resData => setUsers(resData.data))
   }, []);
 
+  const [keyword, setKeyword]=useState('')
   const [repos, setRepos]=useState([]);
-  useEffect(()=>{
-    fetch('https://api.github.com/search/repositories?q=react ')
+  const fetchRepos=()=>{
+    fetch(`https://api.github.com/search/repositories?q=${keyword}`)
     .then(response=>response.json())
-    .then(responseData=>setRepos(responseData.items))
-  }, []);
+    .then((responseData)=>{setRepos(responseData.items)})
+  };
+  const iChanged =(event)=>{
+    setKeyword(event.target.value)
+  }
+
 
   const [user, setUser] =useState({});
   const [userID, setUserID]=useState('');
@@ -59,6 +64,8 @@ function App() {
         </tbody>
       </table>
       <h2>Repositiories</h2>
+      <input type="text" onChange={iChanged} value={keyword}/>
+      <button onClick={fetchRepos}>Search</button>
       <table>
         <tbody>
            <tr><th>Name</th><th>URL</th></tr>
