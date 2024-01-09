@@ -9,6 +9,13 @@ function App() {
     .then(resData => setUsers(resData.data))
   }, []);
 
+  const [repos, setRepos]=useState([]);
+  useEffect(()=>{
+    fetch('https://api.github.com/search/repositories?q=react ')
+    .then(response=>response.json())
+    .then(responseData=>setRepos(responseData.items))
+  }, []);
+
   const [user, setUser] =useState({});
   const [userID, setUserID]=useState('');
   const fetchData =()=>{
@@ -51,7 +58,21 @@ function App() {
         }
         </tbody>
       </table>
-
+      <h2>Repositiories</h2>
+      <table>
+        <tbody>
+           <tr><th>Name</th><th>URL</th></tr>
+        {
+          repos.map((r) => 
+           <tr key={r.id}>
+             <td>{r.full_name}</td>
+             <td><a href={r.html_url}>{r.html_url}</a></td>
+           </tr>
+          )
+        }
+        </tbody>
+      </table>  
+       
       <input placeholder="User ID" value={userID} onChange={inputChanged}/>
       <button onClick={fetchData}>Fetch</button>
       <p>{user.first_name} {user.last_name} {user.email}</p>
