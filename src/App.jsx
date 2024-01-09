@@ -3,16 +3,14 @@ import './App.css';
 
 function App() {
   const [users, setUsers] = useState([]);
-
-  const [user, setUser] =useState({});
-  const [userID, setUserID]=useState('');
-
   useEffect(() => {
     fetch('https://reqres.in/api/users')
     .then(response => response.json())
     .then(resData => setUsers(resData.data))
   }, []);
 
+  const [user, setUser] =useState({});
+  const [userID, setUserID]=useState('');
   const fetchData =()=>{
     fetch('https://reqres.in/api/users/' + userID)
     .then(response=>{
@@ -26,6 +24,16 @@ function App() {
   const inputChanged=(event)=>{
     setUserID(event.target.value);
   }
+
+  const [question, setQuestion] = useState('');
+  const fetchQuestion = () => {
+    fetch("https://opentdb.com/api.php?amount=1")
+    .then(response => response.json())
+    .then(data =>setQuestion(data.results[0].question)
+    )
+    .catch(err => console.error(err))
+  }
+
 
   return (
     <>
@@ -47,7 +55,10 @@ function App() {
       <input placeholder="User ID" value={userID} onChange={inputChanged}/>
       <button onClick={fetchData}>Fetch</button>
       <p>{user.first_name} {user.last_name} {user.email}</p>
-     </>
+
+      <p>{question}</p>
+      <button onClick={fetchQuestion}>New Question</button>
+    </>
   );
 }
 
